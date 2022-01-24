@@ -8,6 +8,17 @@
 import Foundation
 
 public struct Shell {
+    /**
+     Execute a shell command.
+     
+     - Parameters:
+        - args: The command followed by the arguments that should be used to execute the command.
+     
+     - Returns:
+        The output of the command represented by a [String](https://developer.apple.com/documentation/swift/string) object.
+     
+     [Open Reference](https://github.com/JochenBe/Shell#execute)
+     */
     @discardableResult func execute(_ args: String...) -> String {
         let process = Process()
         let outputPipe = Pipe()
