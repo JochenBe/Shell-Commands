@@ -2,10 +2,8 @@ import XCTest
 @testable import Shell
 
 final class ShellTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(Shell().text, "Hello, World!")
+    func testExecute() throws {
+        XCTAssertEqual(Shell().execute("pwd"), "/tmp\n")
+        XCTAssertEqual(Shell().execute("echo", "Hello, World!"), "Hello, World!\n")
     }
 }
