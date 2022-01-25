@@ -19,7 +19,7 @@ public struct Shell {
      
      [Open Reference](https://github.com/JochenBe/Shell#execute)
      */
-    @discardableResult func execute(_ args: String...) -> String {
+    @discardableResult public static func execute(_ args: String...) -> String {
         let process = Process()
         let outputPipe = Pipe()
         

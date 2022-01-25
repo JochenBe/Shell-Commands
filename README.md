@@ -16,7 +16,7 @@ Executing the echo command:
 
 ```Swift
 // Returns "Hello, World!\n"
-Shell().execute("echo", "Hello, World!")
+Shell.execute("echo", "Hello, World!")
 ```
 
 For more information, check the [execute reference].
