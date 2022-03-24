@@ -8,7 +8,21 @@
 import Foundation
 
 public struct Shell {
-    @discardableResult private static func execute(
+    /**
+     Execute a shell command.
+     
+     - Parameters:
+        - args: The command followed by the arguments that should be used to execute the command.
+        - using: The block that executes when receiving data. The block takes one argument: the new data as a [String] object.
+     
+     - Returns:
+        The exit status the receiver’s executable returns.
+     
+     [Open Reference](https://github.com/JochenBe/Shell#execute)
+     
+     [String]: https://developer.apple.com/documentation/swift/string
+     */
+    @discardableResult public static func execute(
         _ args: [String],
         using block: ((String) -> Void)? = nil
     ) -> Int32 {
@@ -78,7 +92,7 @@ public struct Shell {
      [String]: https://developer.apple.com/documentation/swift/string
      */
     @discardableResult public static func execute(
-        _ args: String...
+        _ args: [String]
     ) -> String {
         var strings: [String] = []
         
@@ -87,5 +101,24 @@ public struct Shell {
         }
         
         return strings.joined()
+    }
+    
+    /**
+     Execute a shell command.
+     
+     - Parameters:
+        - args: The command followed by the arguments that should be used to execute the command.
+     
+     - Returns:
+        The output of the command represented by a [String] object.
+     
+     [Open Reference](https://github.com/JochenBe/Shell#execute)
+     
+     [String]: https://developer.apple.com/documentation/swift/string
+     */
+    @discardableResult public static func execute(
+        _ args: String...
+    ) -> String {
+        execute(args)
     }
 }
