@@ -12,13 +12,17 @@ Add `https://github.com/JochenBe/Shell` in the [Swift Package Manager].
 
 ## Usage
 
-Executing the echo command:
+Receiving the output as a string:
 
 ```Swift
 // Returns "Hello, world!\n"
 Shell.execute("echo", "Hello, world!")
+```
 
-// Returns "Hello, world!\n"
+Receiving the exit status and executing a block when receiving data:
+
+```Swift
+// Returns 0
 Shell.execute("echo", "Hello, world!") { string in
     // In this case, this block will run once where
     // string will be equal to "Hello, world!\n"
@@ -36,14 +40,30 @@ Execute a shell command.
 #### Parameters
 
 - `args`: The command followed by the arguments that should be used to execute the command.
-- `using`: The block that executes when receiving data. The block takes one argument: the data as a [String] object.
 
 #### Returns
 
 The output of the command represented by a [String] object.
 
 ```Swift
-@discardableResult static func execute(_ args: String..., using block: ((String) -> Void)? = nil) -> String
+@discardableResult static func execute(_ args: String...) -> String
+```
+
+### execute
+
+Execute a shell command.
+
+#### Parameters
+
+- `args`: The command followed by the arguments that should be used to execute the command.
+- `using`: The block that executes when receiving data. The block takes one argument: the data as a [String] object.
+
+#### Returns
+
+The exit status the receiver’s executable returns.
+
+```Swift
+@discardableResult static func execute(_ args: String..., using block: ((String) -> Void)? = nil) -> Int32
 ```
 
 [swift package manager]: https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app

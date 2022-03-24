@@ -8,24 +8,10 @@
 import Foundation
 
 public struct Shell {
-    /**
-     Execute a shell command.
-     
-     - Parameters:
-        - args: The command followed by the arguments that should be used to execute the command.
-        - using: The block that executes when receiving data. The block takes one argument: the data as a [String] object.
-     
-     - Returns:
-        The output of the command represented by a [String] object.
-     
-     [Open Reference](https://github.com/JochenBe/Shell#execute)
-     
-     [String]: https://developer.apple.com/documentation/swift/string
-     */
-    @discardableResult public static func execute(
-        _ args: String...,
+    @discardableResult private static func execute(
+        _ args: [String],
         using block: ((String) -> Void)? = nil
-    ) -> String {
+    ) -> Int32 {
         let process = Process()
         let outputPipe = Pipe()
         
@@ -34,9 +20,8 @@ public struct Shell {
         process.arguments = args
         process.launch()
         
-        let handle = outputPipe.fileHandleForReading
-        
         if let block = block {
+            let handle = outputPipe.fileHandleForReading
             handle.waitForDataInBackgroundAndNotify()
             
             let observer = NotificationCenter.default.addObserver(
@@ -55,9 +40,52 @@ public struct Shell {
             process.waitUntilExit()
         }
         
-        let outputData = handle.readDataToEndOfFile()
-        let output = String(decoding: outputData, as: UTF8.self)
+        return process.terminationStatus
+    }
+    
+    /**
+     Execute a shell command.
+     
+     - Parameters:
+        - args: The command followed by the arguments that should be used to execute the command.
+        - using: The block that executes when receiving data. The block takes one argument: the new data as a [String] object.
+     
+     - Returns:
+        The exit status the receiver’s executable returns.
+     
+     [Open Reference](https://github.com/JochenBe/Shell#execute)
+     
+     [String]: https://developer.apple.com/documentation/swift/string
+     */
+    @discardableResult public static func execute(
+        _ args: String...,
+        using block: ((String) -> Void)? = nil
+    ) -> Int32 {
+        execute(args, using: block)
+    }
+    
+    /**
+     Execute a shell command.
+     
+     - Parameters:
+        - args: The command followed by the arguments that should be used to execute the command.
+     
+     - Returns:
+        The output of the command represented by a [String] object.
+     
+     [Open Reference](https://github.com/JochenBe/Shell#execute)
+     
+     [String]: https://developer.apple.com/documentation/swift/string
+     */
+    @discardableResult public static func execute(
+        _ args: String...
+    ) -> String {
+        var strings: [String] = []
         
-        return output
+        execute(args) { string in
+            strings.append(string)
+        }
+        
+        return strings.joined()
     }
 }

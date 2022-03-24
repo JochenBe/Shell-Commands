@@ -7,8 +7,10 @@ final class ShellTests: XCTestCase {
         
         XCTAssertEqual(Shell.execute("echo", string), "\(string)\n")
                 
-        Shell.execute("echo", string) { s in
+        let terminationStatus = Shell.execute("echo", string) { s in
             XCTAssertEqual(s, "\(string)\n")
         }
+        
+        XCTAssertEqual(terminationStatus, 0)
     }
 }
