@@ -3,6 +3,12 @@ import XCTest
 
 final class ShellTests: XCTestCase {
     func testExecute() throws {
-        XCTAssertEqual(Shell.execute("echo", "Hello, World!"), "Hello, World!\n")
+        let string = "Hello, world!"
+        
+        XCTAssertEqual(Shell.execute("echo", string), "\(string)\n")
+                
+        Shell.execute("echo", string) { s in
+            XCTAssertEqual(s, "\(string)\n")
+        }
     }
 }
