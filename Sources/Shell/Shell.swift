@@ -32,7 +32,6 @@ public struct Shell {
         process.standardOutput = outputPipe
         process.launchPath = "/usr/bin/env"
         process.arguments = args
-        process.launch()
         
         if let block = block {
             let handle = outputPipe.fileHandleForReading
@@ -47,10 +46,12 @@ public struct Shell {
                 block(string)
             }
             
+            process.launch()
             process.waitUntilExit()
             
             NotificationCenter.default.removeObserver(observer)
         } else {
+            process.launch()
             process.waitUntilExit()
         }
         
